@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OmniCare AI – Diet Watch App</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--g:#0F4C3A;--t:#2BA094;--t2:#259676;--sage:#86A59C;--navy:#23374D;--ink:#222223;--bg:#F2F5F5;--pg:#F2F5F5;--pi:#222223;--pc:#fff;--pl:#cfe5dd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--pg:#10211c;--pi:#e8f1ee;--pc:#17302a;--pl:#1f4a3d}}
+:root[data-theme=dark]{--pg:#10211c;--pi:#e8f1ee;--pc:#17302a;--pl:#1f4a3d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--pi);font-family:'Open Sauce One','Open Sauce Sans',Figtree,system-ui,sans-serif;min-height:100vh;background-image:linear-gradient(var(--pl),transparent 160px)}
+main{max-width:860px;margin:0 auto;padding:22px 16px 40px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center;align-items:flex-start}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--g);color:#fff;border-radius:99px;padding:4px 12px 4px 8px;font-weight:700;font-size:12px}
+.pill svg{width:14px;height:14px}
+.case{position:relative;padding:14px;background:var(--g);border-radius:62px;box-shadow:0 18px 40px rgba(15,76,58,.35)}
+.case>i{position:absolute;right:-7px;background:#0a3528;border-radius:4px;cursor:pointer;border:0;padding:0}
+.crown{top:78px;width:9px;height:38px}.side{top:134px;width:7px;height:26px}
+.w{width:252px;height:306px;border-radius:48px;overflow:hidden;position:relative;background:var(--bg);color:var(--ink)}
+#scr{height:100%;overflow-y:auto;padding:10px 14px 46px;scrollbar-width:none;background:linear-gradient(#b9ddd0,var(--bg) 70px)}
+#scr::-webkit-scrollbar{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;font-size:12px;color:var(--g);font-weight:600}
+.top .pill{font-size:10px;padding:3px 9px 3px 6px}
+h1{font-weight:300;font-size:25px;color:var(--g);margin:6px 0;line-height:1.05}h1 b{font-weight:700}
+h2{font-weight:300;font-size:21px;color:var(--g);margin:4px 0 2px}
+p{margin:4px 0;font-size:12px;line-height:1.35}.it{font-style:italic;color:var(--navy)}
+.badge{width:46px;height:46px;border-radius:50%;background:var(--sage);display:grid;place-items:center;margin:0 auto 6px;border:3px solid #fff}.badge svg{width:24px;height:24px}
+.c{background:#fff;border:1px solid var(--g);border-radius:12px;padding:9px 10px;margin:8px 0;box-shadow:0 6px 10px -8px rgba(15,76,58,.5)}
+.tab{display:inline-block;background:var(--t);color:#fff;border-radius:9px;padding:3px 11px;font-size:13px;margin-top:4px}
+.b{width:100%;border:0;border-radius:99px;background:var(--g);color:#fff;font:700 13px inherit;font-family:inherit;padding:9px;margin:6px 0;cursor:pointer}
+.b:disabled{opacity:.35;cursor:default}.b.o{background:#fff;color:var(--g);border:1px solid var(--g)}.b.t{background:var(--t)}
+.ch{display:inline-block;border:1px solid var(--g);border-radius:99px;padding:4px 9px;font:600 11px inherit;font-family:inherit;background:#fff;color:var(--g);margin:2px 2px 2px 0;cursor:pointer}
+.ch.on{background:var(--g);color:#fff}.ch.n{cursor:default;border-color:var(--sage);color:var(--navy)}
+.row{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:#fff;border:1px solid var(--g);border-radius:12px;padding:7px 9px;margin:6px 0;font:600 12px inherit;font-family:inherit;color:var(--g);cursor:pointer}
+.row.on{background:#e3f1ec;outline:2px solid var(--t)}.row small{display:block;font-weight:400;color:var(--navy);font-size:10.5px;line-height:1.25}
+.ic{flex:none;width:28px;height:28px;border-radius:50%;background:var(--sage);display:grid;place-items:center}.ic svg{width:15px;height:15px}
+.grow{flex:1;min-width:0}.k{font-weight:700;color:var(--g)}
+.alert{background:#fff3e3;border:1px solid #c0792b;border-radius:12px;padding:7px 9px;margin:6px 0;font-size:11.5px;color:#6b3d08}
+.lock{background:#e8eeed;border:1px dashed var(--sage);border-radius:12px;padding:8px;margin:6px 0;font-size:11.5px;color:var(--navy)}
+.toast{position:absolute;left:18px;right:18px;bottom:16px;background:var(--g);color:#fff;border-radius:99px;text-align:center;padding:7px;font-size:12px;font-weight:600}
+.big{font-size:26px;font-weight:300;color:var(--g)}.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px}.g2 .c{margin:0;text-align:center;padding:5px 4px}.g2 .big{font-size:17px;font-weight:700}.g2 p{margin:0;font-size:10.5px;color:var(--navy)}.btns{display:flex;gap:6px}.btns .b{margin:4px 0;padding:8px 4px}
+.side-panel{width:290px;background:var(--pc);border:1px solid var(--g);border-radius:16px;padding:16px}
+.side-panel h3{margin:0 0 4px;font-weight:300;font-size:22px;color:var(--g)}
+.side-panel label{display:block;font-size:13px;margin-top:12px}.side-panel input{width:100%;accent-color:#2BA094}
+.side-panel p{font-size:12.5px;opacity:.85}
+.hero{background:linear-gradient(135deg,#0F4C3A,#259676);color:#fff;border-radius:18px;padding:10px 12px;margin:8px 0;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden}.hero:after{content:'';position:absolute;right:-24px;top:-24px;width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.13)}.hero .big,.hero p,.hero .it{color:#fff}
+.av{width:30px;height:30px;border-radius:50%;background:var(--sage);color:#fff;border:2px solid #fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}.hd{display:flex;align-items:center;gap:8px}
+.bar{height:6px;border-radius:9px;background:#d5e6e0;overflow:hidden;margin:2px 0 6px}.bar i{display:block;height:100%;background:var(--t);border-radius:9px}
+.sl{flex:none;width:26px;height:26px;border-radius:50%;background:var(--t);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}.ch.x{border-color:#c0792b;color:#8a4f0f}
+.ch:disabled{opacity:.35;cursor:default}
+.side-panel select,.side-panel input:not([type=range]):not([type=checkbox]){border:1px solid var(--g);border-radius:8px;padding:6px;font:inherit;background:var(--pc);color:var(--pi);width:100%;margin-top:3px}.side-panel .cb{display:inline-block;width:50%;margin-top:6px;font-size:12.5px}.side-panel .cb input{width:auto}.side-panel{max-width:100%}
+.cap{text-align:center;font-size:12px;margin-top:12px;opacity:.8}
+</style></head><body>
+<main>
+<section><div style="display:flex;justify-content:center;margin-bottom:14px"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 9v5M9.5 11.5h5"/></svg>OmniCare AI · Diet Watch</span></div>
+<div class="case"><i class="crown" id="crown" title="Digital crown: Home"></i><i class="side" id="bk" title="Side button: Back"></i><div class="w"><div id="scr"></div></div></div>
+<div class="cap">Crown = Home · Side button = Back</div></section>
+<aside class="side-panel"><h3>OmniCare website</h3>
+<p>Stand-in for your site’s onboarding. The watch only syncs these details, so nothing is typed on the wrist.</p><div id="web"></div></aside>
+<aside class="side-panel"><h3>Simulation console</h3>
+<p>Simulates sensor data streamed to the watch. Glucose and blood pressure need a Clinical Care plan and a sensor paired on the watch (Vitals). Heart rate needs Athletic or above.</p>
+<label>CGM glucose: <b id="o-g"></b> mg/dL<br><small>Target 70–140</small><input type="range" min="50" max="300" value="96" data-s="g"></label>
+<label>Heart rate: <b id="o-hr"></b> bpm<br><small>Resting 55–70</small><input type="range" min="50" max="180" value="68" data-s="hr"></label>
+<label>Blood pressure: <b id="o-bp"></b> mmHg<br><small>Target under 130 / 85</small><input type="range" min="70" max="220" value="118" data-s="sy"><input type="range" min="40" max="130" value="76" data-s="di"></label>
+<label>Sleep: <b id="o-sl"></b> h<br><small>Recovery floor 6 h</small><input type="range" min="3" max="10" step=".1" value="7.2" data-s="sl"></label>
+<label>Stress score: <b id="o-st"></b>/100<br><small>Calm under 40</small><input type="range" min="0" max="100" value="32" data-s="st"></label>
+<button class="b o" id="rst" style="margin-top:14px">Reset to baseline</button>
+<p style="margin-top:14px">Allergy and location filters apply on every plan. Food availability and nutrition values are estimates; check labels and ask your clinician.</p></aside>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const HT='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 9v5M9.5 11.5h5"/></svg>';
+const IC={meal:'<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 1-3 4-3 7h3v11"/>',vit:'<path d="M3 12h4l2-6 4 12 2-6h6"/>',coach:'<path d="M4 5h16v11H9l-5 4z"/>',log:'<path d="M6 4h12v16H6zM9 9h6M9 13h6"/>',risk:'<path d="M4 17l5-5 4 3 7-8M15 7h5v5"/>',rem:'<path d="M12 4a5 5 0 0 0-5 5v4l-2 3h14l-2-3V9a5 5 0 0 0-5-5zM10 19a2 2 0 0 0 4 0"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/>'};
+const ic=n=>`<span class=ic><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg></span>`;
+const CITY={'angeles city':'c','malolos':'c','san fernando':'c','tarlac city':'c','manila':'n','quezon city':'n','makati':'n','baguio':'b','vigan':'b','cebu city':'v','iloilo city':'v','bacolod':'v','davao city':'m','cagayan de oro':'m','general santos':'m'};
+const RN={c:'Central Luzon',n:'Metro Manila',b:'Northern Luzon',v:'Visayas',m:'Mindanao',a:'the Philippines'};
+const reg=c=>{c=c.trim().toLowerCase();for(const k in CITY)if(c.includes(k))return CITY[k];return'a'};
+const ALG={peanuts:'Peanuts',nuts:'Tree nuts',egg:'Egg',dairy:'Dairy',fish:'Fish',shellfish:'Shellfish',soy:'Soy',gluten:'Gluten'};
+const GI={l:'Low',m:'Medium',h:'High'};
+const SL={b:'Breakfast',l:'Lunch',d:'Dinner',s:'Snack'},TM={b:'7:00 AM',l:'12:00 NN',d:'6:30 PM',s:'3:30 PM'},NOTE={b2:'Soluble fiber keeps the morning curve flat.',l3:'Lean fish, fiber-dense vegetables.',s8:'Raw tuna cured in vinegar and calamansi.'};
+const F=`b1|Brown rice lugaw with egg|b|290|14|40|420|m|egg|a
+b2|Oatmeal with saba & cinnamon|b|260|8|44|95|l|gluten|a
+b3|Steamed kamote & boiled egg|b|260|10|42|160|l|egg|a
+b4|Tokwa & tomato, brown rice|b|330|17|44|380|m|soy|a
+b5|Daing na bangus, brown rice|b|380|30|38|520|m|fish|c;b
+l1|Tinola with malunggay, brown rice|l|420|32|48|640|m||a
+l2|Ginisang munggo with malunggay|l|400|20|62|480|l||a
+l3|Grilled tilapia with pinakbet|l|380|34|28|560|l|fish|c;n;b
+l4|Chicken inasal, cucumber salad|l|480|38|45|720|m||v
+l5|Inihaw na tuna, steamed kangkong|l|450|36|44|480|m|fish|m
+l6|Sinigang na hipon with kangkong|l|330|28|22|900|l|shellfish|c;n;v
+l7|Chicken & sayote salad, kamote|l|400|34|40|420|l||b
+d1|Steamed fish, ginger & bok choy|d|350|32|34|430|l|fish|a
+d2|Lemon-garlic chicken, ensaladang talong|d|390|38|20|380|l||a
+d3|Lean nilagang baka with cabbage|d|410|34|30|560|l||a
+d4|Lean kare-kare, steamed vegetables|d|460|28|30|650|m|peanuts|c
+d5|Grilled squid, tomato-onion salad|d|340|34|16|600|l|shellfish|v
+d6|Pancit with vegetables & shrimp|d|420|22|58|780|h|shellfish;gluten|c;n
+s1|Saba banana with peanut butter|s|220|6|36|60|m|peanuts|a
+s2|Papaya & guava|s|120|2|28|10|l||a
+s3|Plain yogurt with mango|s|170|9|24|70|m|dairy|a
+s4|Roasted kamote|s|140|2|32|20|l||a
+s5|Strawberries & almonds|s|150|5|14|5|l|nuts|b
+s6|Boiled egg & cucumber|s|90|7|2|70|l|egg|a
+s7|Dried mango|s|150|1|34|10|h||v
+s8|Kinilaw na tuna|s|180|26|4|420|l|fish|a`.split('\n').map(r=>{const x=r.split('|');return{id:x[0],n:x[1],s:x[2],k:+x[3],p:+x[4],c:+x[5],na:+x[6],gi:x[7],al:x[8]?x[8].split(';'):[],r:x[9].split(';')}});
+const PL=[{n:'Free',p:0,d:'Manual logging & general wellness tracking'},{n:'General Wellness',p:299,d:'Basic AI coaching, daily stress/sleep tracking'},{n:'Athletic Performance',p:499,d:'Dual-AI persona, high-performance coaching, wearable telemetry'},{n:'Clinical Care',p:799,d:'Dual-AI persona, CGM integration, clinical guardrails, health export'}];
+const S={scr:'w0',paired:false,st:[],name:'Alex',cond:[],condT:'',ht:'170',wt:'68',age:'24',sex:'m',goal:'keep',adj:0,cgm:false,bp:false,alg:[],oth:'',city:'Angeles City',plan:1,pick:{b:0,l:0,d:0,s:0},log:[],sel:'b',per:'doc',toast:'',last:'',get type(){return this.plan==2?'ath':this.plan==3?'chr':'gen'}};
+const V={g:96,hr:68,sy:118,di:76,sl:7.2,st:32,j:0};
+const T=()=>S.plan??0, dm=()=>S.cond.includes('dm'), htn=()=>S.cond.includes('htn');
+const R={};
+const cn=c=>({dm:'Type 2 Diabetes',htn:'Hypertension'}[c]||(S.condT.trim()||'Other'));
+const GL={lose:'Gentle loss',keep:'Maintain',gain:'Gradual gain'};
+const bodyOK=()=>{const h=+S.ht,w=+S.wt,a=+S.age;return h>=100&&h<=230&&w>=25&&w<=250&&a>=18&&a<=100&&!!S.sex};
+const bmi=()=>{const h=+S.ht/100,w=+S.wt;return h>0&&w>0?Math.round(w/h/h*10)/10:0};
+const bcat=b=>b<18.5?'Underweight':b<25?'Healthy weight':b<30?'Overweight':'Obesity range';
+const bmiTxt=()=>+S.age&&+S.age<18?'OmniCare is for adults 18 and over.':bmi()?`BMI ${bmi()} · ${bcat(bmi())}`:'Enter your height and weight to see your BMI.';
+const base=()=>{const bmr=10*S.wt+6.25*S.ht-5*S.age+(S.sex=='m'?5:-161),af=[1.4,1.4,1.7,1.3][T()],g=S.goal=='lose'&&bmi()>=18.5?.85:S.goal=='gain'?1.1:1;return Math.max(1200,Math.round(bmr*af*g/50)*50)};
+const tgt=()=>bodyOK()?Math.max(1200,base()+S.adj):2000;
+const cgmOn=()=>T()>=3&&S.cgm;
+const bpOn=()=>T()>=3&&S.bp;
+const bpHigh=()=>V.sy>=140||V.di>=90;
+const bpCat=()=>V.sy<90||V.di<60?'Low':V.sy>=180||V.di>=120?'Crisis range':bpHigh()?'High':bpOut()?'Above target':'In target';
+const mac=()=>({p:Math.round(tgt()*.15/4),c:Math.round(tgt()*.44/4),na:2000});
+const nrow=(l,v,mx,u)=>`<p style="margin:6px 0 0"><span class=k>${l}</span><span style="float:right">${v} / ${mx} ${u}</span></p><div class=bar><i style="width:${Math.min(100,v/mx*100)}%"></i></div>`;
+const bpOut=()=>V.sy>=130||V.di>=85;
+const tags=f=>[f.gi=='l'&&'Low GI',f.na<=140&&'Low sodium',f.p>=20&&'High protein',...f.al.map(a=>ALG[a].toLowerCase())].filter(Boolean);
+const reads=()=>[cgmOn()&&`Glucose ${V.g} mg/dL`,bpOn()&&`BP ${V.sy}/${V.di} mmHg`,T()>=2&&`heart rate ${hr()} bpm`,`sleep ${V.sl} h`].filter(Boolean).join(', ').replace(/^./,c=>c.toUpperCase());
+const ready=()=>bodyOK()&&!!S.name.trim()&&!!S.city.trim();
+const medWarn=()=>[dm()&&(T()<3?'Glucose monitoring is medically important with Type 2 Diabetes, but your plan has no CGM. Upgrade to Clinical Care, or check with a meter as your clinician advises.':!S.cgm?'Glucose monitoring is recommended for Type 2 Diabetes. Pair a CGM sensor, or check with a meter as your clinician advises. Glucose-based diet changes are off.':''),htn()&&(T()<3?'Blood pressure monitoring is medically important with Hypertension, but your plan has no BP sensor support. Upgrade to Clinical Care, or check with a home monitor as your clinician advises.':!S.bp?'Blood pressure monitoring is recommended for Hypertension. Pair a BP cuff, or check with a home monitor as your clinician advises. BP-based diet changes are off.':'')].filter(Boolean).join('<br>');
+const bodyCards=()=>`<div class=c><b class=k>BMI ${bmi()}</b> · ${bcat(bmi())}<div class=bar><i style="width:${Math.max(4,Math.min(100,(bmi()-15)/25*100))}%"></i></div><p>${S.ht} cm · ${S.wt} kg · ${S.age} yrs</p><p class=it>Screening estimate, not a diagnosis.</p></div><div class=c><span class=big style="font-size:22px">${tgt()}</span> <span class=it>kcal / day</span><div style="margin:4px 0"><button class=ch data-a=adj data-v=-100>− 100</button><button class=ch data-a=adj data-v=100>+ 100</button></div><p class=it>${GL[S.goal]} · estimate ${base()}${S.adj?` ${S.adj>0?'+':'−'} ${Math.abs(S.adj)}`:''} (based on your plan’s activity level)${S.cond.length?'. Confirm with your clinician.':''}</p></div>`;
+const btn=(a,t,v='',c='',x='')=>`<button class="b ${c}" data-a="${a}" data-v="${v}" ${x}>${t}</button>`;
+const tab=t=>`<div class=tab>${t}</div>`;
+const hr=()=>V.hr+V.j;
+
+function ok(f){const r=reg(S.city);const o=S.oth.trim().toLowerCase();
+ return(f.r.includes('a')||f.r.includes(r))&&!f.al.some(a=>S.alg.includes(a))&&!(o&&f.n.toLowerCase().includes(o))}
+function clin(f){return(!dm()||f.gi!='h')&&(!htn()||f.na<=650)}
+function sc(f){let s=0;
+ if(S.type=='ath'){s+=f.p*2;if(T()>=2&&hr()>110&&f.s=='s')s+=f.p*3}
+ if(S.type=='chr')s+=(f.gi=='l'?20:f.gi=='m'?8:0)-f.na/50;
+ if(S.type=='gen')s+=(f.gi=='l'?10:0)-f.na/100;
+ if(T()>=1&&V.sl<6&&f.s=='d')s-=f.k/12;
+ if(T()>=1&&V.st>40&&f.gi=='l')s+=8;
+ if(cgmOn()&&dm()&&V.g>140)s-=f.c*2;
+ if(bpOn()&&bpOut())s-=f.na/10;
+ return s}
+const cands=s=>F.filter(f=>f.s==s&&ok(f)&&clin(f)).sort((a,b)=>sc(b)-sc(a));
+const pickOf=s=>{const l=cands(s);return l.length?l[S.pick[s]%l.length]:null};
+const hidden=()=>{const r=reg(S.city);return F.filter(f=>(f.r.includes('a')||f.r.includes(r))&&!ok(f)||ok(f)&&!clin(f)).length};
+function notes(){const n=[];
+ if(cgmOn()&&dm()&&V.g>140)n.push('Glucose above target: lower-carb picks');
+ if(bpOn()&&bpOut())n.push('BP above target: lower-sodium picks');
+ if(T()>=2&&S.type=='ath'&&hr()>110)n.push('Active: protein snack boosted');
+ if(T()>=1&&V.sl<6)n.push('Short sleep: lighter dinner');
+ if(T()>=1&&V.st>40)n.push('Stress above calm band: low-GI picks');
+ return n}
+function alerts(){const a=[];if(T()<3)return a;
+ if(dm()&&cgmOn()&&V.g>180)a.push(`Glucose ${V.g} mg/dL is high. Drink water, take a 10-minute walk and skip sweets. If it stays high, contact your clinician.`);
+ if(dm()&&cgmOn()&&V.g<70)a.push(`Glucose ${V.g} mg/dL is low. Take 15 g of fast carbs (about ½ cup juice), then recheck in 15 minutes.`);
+ if(bpOn()&&(V.sy>=180||V.di>=120))a.push(`BP ${V.sy}/${V.di} is very high. Rest 5 minutes and recheck. If it stays this high, or you have chest pain, trouble breathing or weakness, call emergency services.`);
+ else if(bpOn()&&bpHigh())a.push(`BP ${V.sy}/${V.di} is high. Rest, drink water and choose low-salt meals. Tell your clinician if it stays high.`);
+ else if(bpOn()&&(V.sy<90||V.di<60))a.push(`BP ${V.sy}/${V.di} is low. Sit down and drink water. Tell your clinician if you feel dizzy.`);
+ if(htn()&&S.log.reduce((t,f)=>t+f.na,0)>2000)a.push('Sodium is over 2,000 mg today. Choose low-salt meals and drink water.');
+ return a}
+const tot=k=>S.log.reduce((t,f)=>t+f[k],0);
+
+R.w0=()=>`<div style="text-align:center;padding-top:6px"><div class=badge>${HT}</div><h1>OmniCare <b>AI</b></h1><p class=it>Watch companion</p><div class=c><p>Open your OmniCare AI account on the web and enter this code to link your watch:</p><div class=big style="letter-spacing:3px">482 915</div></div>${ready()?'':'<div class=alert>Finish your profile on the website first: name, height, weight, age, sex and city.</div>'}${btn('pair','Sync with my account','','',ready()?'':'disabled')}</div>`;
+R.wait=()=>`<div class=alert>Your profile on the website is incomplete. Finish it to keep syncing.</div>`;
+R.home=()=>{const tg=tgt(),k=tot('k'),pr=Math.min(1,k/tg),C=2*Math.PI*30,al=alerts(),m=mac(),h=new Date().getHours(),gr=h<12?'Good morning':h<18?'Good afternoon':'Good evening',mw=medWarn(),
+ mode=S.type=='chr'?'Chronic care mode':S.type=='ath'?'Athletic performance':'General wellness',
+ goal=S.type=='chr'?(dm()&&htn()?'Sugar and pressure stabilization':dm()?'Sugar stabilization':htn()?'Pressure stabilization':'Condition care'):'',
+ band=!(cgmOn()&&(V.g>140||V.g<70))&&!(bpOn()&&bpOut());
+ return `<div class=hd><span class=av>${(S.name.trim()[0]||'?').toUpperCase()}</span><h2 style="margin:0;font-size:18px">${gr}, ${S.name.trim().split(' ')[0]}</h2></div>
+ <div style="margin:6px 0">${T()>=2?'<span class="ch n">● Telemetry live</span>':''}<span class="ch n">${PL[T()].n}</span></div><p class=it>${mode}${goal?' · '+goal:''}. 4 plates scored for ${S.city}.</p>
+ <div class=hero><svg width=70 height=70 viewBox="0 0 70 70"><circle cx=35 cy=35 r=30 fill=none stroke="rgba(255,255,255,.28)" stroke-width=7 /><circle cx=35 cy=35 r=30 fill=none stroke="#fff" stroke-width=7 stroke-linecap=round stroke-dasharray="${C*pr} ${C}" transform="rotate(-90 35 35)"/><text x=35 y=39 text-anchor=middle font-size=12 font-weight=700 fill="#fff">${Math.round(pr*100)}%</text></svg><div><div class=big>${k}</div><p class=it>of ${tg} kcal · ${Math.max(0,tg-k)} left</p></div></div>
+ <div class=c>${nrow('Protein',tot('p'),m.p,'g')}${nrow('Carbs',tot('c'),m.c,'g')}${nrow('Sodium',tot('na'),m.na,'mg')}</div>
+ ${mw?`<div class=alert><b>⚠ Medical notice:</b> ${mw}</div>`:''}${al.map(a=>`<div class=alert><b>Guardrail:</b> ${a}</div>`).join('')}${T()>=2&&!al.length&&!mw?`<div class=c><b class=k>✓ All guardrails clear</b> <span class="ch n">Doctor</span><p>${reads()}. Nothing needs clinical escalation right now. Keep the current plan.</p></div>`:''}
+ ${T()>=3?`<div class=c><b class=k>Today’s focus</b><p>${band?'Biometrics are inside your clinical band. Keep the current plan.':'A reading is outside your target band. Meals are adjusted.'}</p>${cgmOn()?nrow('Glucose vs target band',V.g,180,'mg/dL'):''}<p class=it>Medication adherence: not scheduled<br>Clinical guardrails active: coaching, not diagnosis.</p></div>`:''}
+ ${[['meal','Today’s Meal Plan',`Scored for ${S.city}`,'meals'],['vit','Vitals & Telemetry','Glucose, BP, heart rate, sleep','vit'],['coach','AI Coach','Doctor and trainer signals','coach'],['log','Nutrient Load',`${S.log.length} logged`,'log'],['risk','Risk Prediction','Forecast for your category','risk'],['rem','Reminders','No doses scheduled','rem'],['user','User Profile','Synced from the website','prof']].map(r=>`<button class=row data-a=go data-v=${r[3]}>${ic(r[0])}<span class=grow>${r[1]}<small>${r[2]}</small></span>›</button>`).join('')}`};
+R.meals=()=>{const n=notes();
+ return `${tab('Today’s Meal Plan')}<p class=it>4 plates scored for ${S.city}${reg(S.city)!='a'?', '+RN[reg(S.city)]:''} · ${S.alg.length||S.oth?'allergy-safe':'no allergies set'}</p>${n.map(x=>`<span class="ch n">${x}</span>`).join('')}${['b','l','d','s'].map(s=>{const f=pickOf(s);return `<button class=row data-a=sel data-v=${s}><span class=sl>${SL[s][0]}</span><span class=grow>${SL[s]} · ${TM[s]}<small>${f?f.n:'No safe match. Ask your clinician or a dietitian.'}</small></span><span class=k>${f?f.k:''}</span></button>`}).join('')}<p class=it>${hidden()} dishes hidden for your allergies or condition. Availability is an estimate.</p>${btn('plan','Log today’s plan')}`};
+R.det=()=>{const s=S.sel,f=pickOf(s);if(!f)return `${tab(SL[s])}<p>Nothing matches your allergies, condition and area. Please consult a dietitian.</p>`;
+ const w=[];if(S.alg.length||S.oth)w.push('Free of your listed allergens');
+ w.push(f.r.includes('a')?'Staples sold in most markets':'Local pick for '+RN[reg(S.city)]);
+ if(S.type=='ath')w.push(f.p+' g protein for recovery');
+ if(dm())w.push(GI[f.gi]+' glycemic index');
+ if(htn())w.push(f.na+' mg sodium (limit about 650 per meal)');
+ if(S.type=='gen')w.push('Balanced for steady energy');
+ return `${tab(SL[s])}<h2 style="font-size:17px;font-weight:600">${f.n}</h2>${tags(f).map(t=>`<span class="ch n">${t}</span>`).join('')}${NOTE[f.id]?`<p class=it>${NOTE[f.id]}</p>`:''}<div class=g2><div class=c><div class=big>${f.k}</div><p>kcal</p></div><div class=c><div class=big>${f.p}g</div><p>protein</p></div><div class=c><div class=big>${f.c}g</div><p>carbs</p></div><div class=c><div class=big>${f.na}</div><p>mg sodium</p></div></div><div class=bar style="margin-top:8px"><i style="width:${Math.min(100,f.k/tgt()*300)}%"></i></div><p class=it style="margin-top:0">${Math.round(f.k/tgt()*100)}% of your daily target</p><div class=c>${w.map(x=>`<p>✓ ${x}</p>`).join('')}</div><div class=btns>${btn('log','Log meal')}${btn('swap','Swap','','o')}</div>`};
+const lockBox=n=>`<div class=lock>Locked. Included in <b>${PL[n].n}</b> (₱${PL[n].p}/month). Upgrade on the OmniCare website.</div>`;
+R.vit=()=>{const h=[-6,4,22,38,30,0].map(d=>Math.max(55,Math.min(295,V.g+d)));const pts=h.map((v,i)=>`${i*34},${50-(v-50)/5.2}`).join(' ');
+ return `${tab('Vitals & Telemetry')}<div class=c><b class=k>Sleep</b> ${V.sl} h (floor 6) <span class=it>${T()?'tracked':'manual'}</span><br><b class=k>Stress</b> ${V.st}/100 ${V.st>40?'· above calm band':''}</div>
+ ${T()>=2?`<div class=c><b class=k>Heart rate</b> <span class=big>${hr()}</span> bpm <p class=it>Wearable · live · resting target 55–70</p></div>`:lockBox(2)}
+ ${medWarn()?`<div class=alert><b>⚠ Medical notice:</b> ${medWarn()}</div>`:''}${T()<3?lockBox(3):`${cgmOn()?`<div class=c><b class=k>Glucose (CGM)</b> <span class=big>${V.g}</span> mg/dL<svg viewBox="0 0 170 56" width=100% height=48><polyline points="${pts}" fill=none stroke="${V.g>180||V.g<70?'#c0792b':'#2BA094'}" stroke-width=3 stroke-linecap=round /></svg><p class=it>${V.g<70?'Low':V.g<=140?'In range':V.g<=180?'Above target':'High'}. Target 70–140 mg/dL, limit 180. CGM readings can lag a few minutes.</p><button class=ch data-a=cgm>Unpair sensor</button></div>`:`<div class=c><b class=k>Glucose (CGM)</b><p>No sensor connected. Glucose tracking and its diet changes are off.</p>${btn('cgm','Pair CGM sensor','','t')}</div>`}${bpOn()?`<div class=c><b class=k>Blood pressure</b> <span class=big>${V.sy}/${V.di}</span> mmHg<p class=it>${bpCat()}. Target under 130/85, baseline 120/80. Not a diagnosis.</p><button class=ch data-a=bp>Unpair cuff</button></div>`:`<div class=c><b class=k>Blood pressure</b><p>No cuff connected. BP tracking and its diet changes are off.</p>${btn('bp','Pair BP cuff','','t')}</div>`}`}`};
+R.coach=()=>{if(T()==0)return `${tab('Coach')}${lockBox(1)}`;
+ const sm=T()>=2,doc=sm&&(S.cond.length>0||alerts().length>0),trn=sm&&(S.type=='ath'||!doc),dual=doc&&trn,who=dual?S.per:doc?'doc':'tr';let m;
+ if(!sm||who=='tr'){m=[];
+  if(S.type=='ath'&&hr()>110)m.push('You’re in a training zone. Eat a protein snack within 1–2 hours after you finish.');
+  else if(S.type=='ath')m.push('Rest-day fuel: lean protein and low-GI carbs at each meal.');
+  if(V.st>40)m.push('Stress is above your calm band (40). Swap the hard session for a walk or mobility work.');
+  if(V.sl<6)m.push(`You slept ${V.sl} h. Keep dinner light and skip caffeine after noon.`);
+  if(!m.length)m.push('Steady day. Follow your plan and drink water often.')}
+ else{m=alerts();if(medWarn())m.unshift(medWarn());if(V.sl<6)m.push(`You slept ${V.sl} h. Keep dinner light and limit caffeine after noon.`);
+  if(T()==2&&S.cond.length)m.push('Add the Clinical Care plan for CGM and clinical guardrails.');
+  if(!m.length)m.push(`All guardrails clear. ${reads()}. Nothing needs clinical escalation right now. Keep the current plan.`)}
+ return `${tab('AI Coach')}${!dual?`<span class="ch n">${!sm?'Wellness':doc?'Doctor':'Trainer'}</span>`:''}${dual?`<div style="margin:6px 0"><button class="ch ${S.per=='doc'?'on':''}" data-a=per data-v=doc>Doctor</button><button class="ch ${S.per=='tr'?'on':''}" data-a=per data-v=tr>Trainer</button></div>`:''}<div class=c>${m.map(x=>`<p>${x}</p>`).join('')}</div><p class=it>General guidance, not a medical diagnosis.</p>`};
+R.log=()=>{const m=mac();return `${tab('Nutrient Load')}<div class=c><p class=it>Against today’s targets · ${S.log.length} logged</p>${nrow('Calories',tot('k'),tgt(),'kcal')}${nrow('Protein',tot('p'),m.p,'g')}${nrow('Carbs',tot('c'),m.c,'g')}${nrow('Sodium',tot('na'),m.na,'mg')}</div>${S.log.length?`<div class=c>${S.log.map(f=>`<p><b class=k>${f.k}</b> kcal · ${f.n}</p>`).join('')}</div>`:''}${btn('plan','Log the recommended plan')}`};
+R.risk=()=>{if(T()<3)return `${tab('Risk Prediction')}${lockBox(3)}`;
+ const lv=(x,w)=>x?'High':w?'Watch':'Low',g=V.g,nd='No data',chip=l=>`<span class="ch ${l=='Low'||l==nd?'n':'on'}">${l}</span>`,
+ r=(t,l,d,x)=>`<div class=c><b class=k>${t}</b> ${chip(l)}<p>${d}</p>${x?`<p class=it>${x}</p>`:''}</div>`,cg='Pair a CGM sensor to forecast this.';
+ return `${tab('Risk Prediction')}<p class=it>Forecast for this category. A simple rule-based estimate, not a diagnosis.</p>
+ ${r('Hypoglycemia risk',cgmOn()?lv(g<70,g<85):nd,cgmOn()?(g>=85?'Buffer above your hypoglycemia floor is comfortable.':g>=70?'Close to your floor. Keep a snack ready.':'Below your floor. Follow the low-glucose guardrail.'):cg,cgmOn()?`glucose ${g} mg/dL · floor 70 mg/dL`:'')}
+ ${r('Blood pressure risk',bpOn()?lv(bpHigh(),bpOut()):nd,bpOn()?(bpOut()?(bpHigh()?'Pressure is above your target. Rest and recheck.':'Pressure is slightly above your target.'):'Pressure is within your resting baseline.'):'Pair a BP cuff to forecast this.',bpOn()?`${V.sy}/${V.di} mmHg · ${tot('na')} mg sodium today`:'')}
+ ${r('Medication adherence risk','Low','No doses scheduled today.','')}
+ ${r('Hyperglycemia risk',cgmOn()?lv(g>180,g>140):nd,cgmOn()?(g<=140?'Glucose is inside your clinical target band.':g<=180?'Glucose is above target but under your ceiling.':'Glucose is above your 180 mg/dL ceiling.'):cg,cgmOn()?`glucose ${g} mg/dL · ceiling 180 mg/dL`:'')}`};
+R.rem=()=>`${tab('Reminders')}<div class=c><p><b class=k>Medication adherence</b><br>No doses scheduled today.</p></div><p class=it>Set up medication reminders on the OmniCare website. They will show here.</p>`;
+R.prof=()=>`${tab('User Profile')}<div class=c><div class=hd style="margin-bottom:4px"><span class=av>${(S.name.trim()[0]||'?').toUpperCase()}</span><b class=k>${S.name}</b></div><p><b class=k>Active plan</b> ${T()?'Tier '+T()+' · ':''}${PL[T()].n} · ₱${PL[T()].p}/month</p><p><b class=k>Conditions</b> ${S.cond.length?S.cond.map(cn).join(', '):'None'}</p><p><b class=k>Allergies</b> ${[...S.alg.map(a=>ALG[a]),...(S.oth.trim()?[S.oth.trim()]:[])].join(', ')||'None'}</p><p><b class=k>Location</b> ${S.city} (${RN[reg(S.city)]})</p></div>${bodyCards()}<p class=it>Synced from your OmniCare account. Change these and manage your subscription on the website.</p>${T()>=3?btn('exp','Clinical export','','t'):'<div class=lock>Clinical export is part of Clinical Care.</div>'}${btn('unpair','Unpair watch','','o')}<p class=it>Your health data is encrypted.</p>`;
+
+function syncForm(init){document.querySelectorAll('[data-w]').forEach(el=>{const[k,v]=el.dataset.w.split(':');if(v!==undefined)el.checked=S[k].includes(v);else if(init||el.tagName=='SELECT')el.value=S[k]})}
+function buildWeb(){const L=(l,h)=>`<label>${l}${h}</label>`,I=(k,t='text',x='')=>`<input type=${t} data-w=${k} ${x}>`,O=(k,o)=>`<select data-w=${k}>${o.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select>`,C=(p,o)=>o.map(([k,t])=>`<label class=cb><input type=checkbox data-w="${p}:${k}"> ${t}</label>`).join('');
+$('#web').innerHTML=L('Name',I('name'))+L('Height (cm)',I('ht','number'))+L('Weight (kg)',I('wt','number'))+L('Age',I('age','number'))+L('Sex',O('sex',[['f','Female'],['m','Male']]))+L('Goal',O('goal',Object.entries(GL)))+'<p class=it id=w-bmi></p>'+L('Allergies','')+C('alg',Object.entries(ALG))+L('Other allergy',I('oth'))+L('Health conditions','')+C('cond',[['dm','Type 2 Diabetes'],['htn','Hypertension'],['other','Other']])+L('Other condition',I('condT'))+L('City',I('city','text','list=wc')+`<datalist id=wc>${Object.keys(CITY).map(c=>`<option value="${c.replace(/\b\w/g,m=>m.toUpperCase())}">`).join('')}</datalist>`)+L('Plan',O('plan',PL.map((p,i)=>[i,`${p.n} (₱${p.p}/mo)`])));syncForm(1)}
+function nav(){const s=S.scr;if(s=='home'||s=='w0')return'';return'<button class=ch data-a=home>‹ Home</button>'+(s=='det'?'<button class=ch data-a=back>‹ Meals</button>':'')}
+function render(){const el=$('#scr');const same=S.last==S.scr,top=el.scrollTop;
+ const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+ el.innerHTML=`<div class=top><span class=pill>${HT}OmniCare</span><span>${t}</span></div>`+nav()+R[S.paired&&!ready()?'wait':S.scr]()+(S.toast?`<div class=toast>${S.toast}</div>`:'');
+ el.scrollTop=same?top:0;S.last=S.scr;
+ for(const k of['g','hr','sl','st'])$('#o-'+k).textContent=V[k];$('#o-g').textContent=cgmOn()?V.g:'– (no sensor)';$('#o-bp').textContent=bpOn()?V.sy+'/'+V.di:'– (no cuff)';document.querySelector('[data-s=g]').disabled=!cgmOn();document.querySelectorAll('[data-s=sy],[data-s=di]').forEach(x=>x.disabled=!bpOn());$('#w-bmi').textContent=bmiTxt();syncForm();document.querySelectorAll('[data-s]').forEach(x=>x.value=V[x.dataset.s])}
+const go=s=>{S.st.push(S.scr);S.scr=s;render()};
+const back=()=>{if(S.st.length){S.scr=S.st.pop();render()}};
+const say=t=>{S.toast=t;render();setTimeout(()=>{S.toast='';render()},1700)};
+const tg=(a,v)=>{const i=a.indexOf(v);i<0?a.push(v):a.splice(i,1)};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+ if(a=='go')go(v);
+ else if(a=='sel'){S.sel=v;go('det')}
+ else if(a=='swap'){S.pick[S.sel]++;render()}
+ else if(a=='log'){const f=pickOf(S.sel);if(f){S.log.push(f);say('Logged '+f.k+' kcal')}}
+ else if(a=='per'){S.per=v;render()}
+ else if(a=='exp')say('Summary ready for your clinic');
+ else if(a=='home'){S.st=[];S.scr='home';render()}
+ else if(a=='back')back();
+ else if(a=='cgm'){S.cgm=!S.cgm;say(S.cgm?'Sensor paired (demo)':'Sensor unpaired')}
+ else if(a=='adj'){S.adj=Math.max(-500,Math.min(500,S.adj+ +v));render()}
+ else if(a=='pair'){S.paired=true;S.st=[];S.scr='home';S.pick={b:0,l:0,d:0,s:0};say('Profile synced')}
+ else if(a=='plan'){['b','l','d','s'].forEach(x=>{const f=pickOf(x);if(f&&!S.log.includes(f))S.log.push(f)});say('Plan logged')}
+ else if(a=='unpair'){S.paired=false;S.st=[];S.scr='w0';render()}
+ else if(a=='bp'){S.bp=!S.bp;say(S.bp?'BP cuff paired (demo)':'BP cuff unpaired')}});
+document.addEventListener('input',e=>{const d=e.target.dataset;
+ if(d.w){const[k,v]=d.w.split(':');if(v!==undefined){if(e.target.checked!=S[k].includes(v))tg(S[k],v)}else{S[k]=k=='plan'?+e.target.value:e.target.value;if(k=='goal')S.adj=0}render();return}
+ if(d.s){V[d.s]=+e.target.value;render()}});
+$('#crown').onclick=()=>{if(S.paired){S.st=[];S.scr='home';render()}};
+$('#bk').onclick=back;
+$('#rst').onclick=()=>{Object.assign(V,{g:96,hr:68,sy:118,di:76,sl:7.2,st:32});render()};
+setInterval(()=>{if(S.scr=='home'||S.scr=='vit'){V.j=Math.round(Math.random()*6-3);render()}},3000);
+buildWeb();render();
+</script></body></html>
